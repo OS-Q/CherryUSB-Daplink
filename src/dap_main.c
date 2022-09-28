@@ -148,6 +148,7 @@ static struct usbd_endpoint dap_endpoint_send = {
 uint8_t cdc_read_buffer[64];
 ring_buffer_t uart_ring_buffer;
 ring_buffer_t cdc_ring_buffer;
+struct cdc_line_coding dap_line_coding;
 
 extern uint8_t USB_Request[DAP_PACKET_SIZE];
 volatile bool ep_tx_busy_flag = false;
@@ -165,6 +166,14 @@ __WEAK void dap_uart_send_from_ringbuff(void)
 __WEAK void dap_uart_config(uint32_t baudrate, uint8_t databits, uint8_t parity, uint8_t stopbits)
 {
 
+}
+
+void dap_line_coding_init(void)
+{
+    dap_line_coding.dwDTERate = 115200;
+    dap_line_coding.bDataBits = 8;
+    dap_line_coding.bParityType = 0;
+    dap_line_coding.bCharFormat = 0;
 }
 
 char send_buffer[RING_BUFFER_SIZE];
@@ -214,8 +223,20 @@ void usbd_cdc_acm_bulk_in(uint8_t ep, uint32_t nbytes)
 
 void usbd_cdc_acm_set_line_coding(uint8_t intf, struct cdc_line_coding *line_coding)
 {
+    dap_line_coding.dwDTERate = line_coding->dwDTERate;
+    dap_line_coding.bDataBits = line_coding->bDataBits;
+    dap_line_coding.bParityType = line_coding->bParityType;
+    dap_line_coding.bCharFormat = line_coding->bCharFormat;
     dap_uart_config(line_coding->dwDTERate, line_coding->bDataBits,
                     line_coding->bParityType, line_coding->bCharFormat);
+}
+
+void usbd_cdc_acm_get_line_coding(uint8_t intf, struct cdc_line_coding *line_coding)
+{
+    line_coding->dwDTERate = dap_line_coding.dwDTERate;
+    line_coding->bDataBits = dap_line_coding.bDataBits;
+    line_coding->bParityType = dap_line_coding.bParityType;
+    line_coding->bCharFormat = dap_line_coding.bCharFormat;
 }
 
 void usbd_cdc_acm_set_dtr(uint8_t intf, bool dtr)
@@ -242,6 +263,7 @@ extern struct usb_msosv1_descriptor msosv1_desc;
 int dap_main(void)
 {
     dap_platform_init();
+    dap_line_coding_init();
     usbd_desc_register(rv_dap_plus_descriptor);
     usbd_msosv1_desc_register(&msosv1_desc); /*register winusb*/
 

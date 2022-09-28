@@ -50,10 +50,3 @@ void dap_process(void)
     }
 }
 
-void gpio_init(void)
-{
-    gpio_set_mode(LED_CONNECTED, GPIO_OUTPUT_MODE);
-    gpio_set_mode(LED_RUNNING, GPIO_OUTPUT_MODE);
-    gpio_write(LED_CONNECTED, 1U);
-    gpio_write(LED_RUNNING, 1U);
-}
