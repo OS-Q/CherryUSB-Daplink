@@ -19,7 +19,8 @@
 #define LED_RUNNING    B15
 #define DAP_CPU_CLOCK  72000000U
 
-
+#define UART_TX_PIN    A9  
+#define UART_RX_PIN    A10
 
 #define  DWT_CR      *(uint32_t*)0xE0001000
 #define  DWT_CYCCNT  *(uint32_t*)0xE0001004
