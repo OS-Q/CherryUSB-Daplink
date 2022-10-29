@@ -260,6 +260,9 @@ static struct usbd_endpoint cdc_in_ep = {
 extern void dap_process(void);
 extern struct usb_msosv1_descriptor msosv1_desc;
 
+struct usbd_interface intf0;
+struct usbd_interface intf1;
+
 int dap_main(void)
 {
     dap_platform_init();
@@ -273,8 +276,8 @@ int dap_main(void)
     usbd_add_endpoint(&dap_endpoint_send);
 
     /*!< cdc acm */
-    usbd_add_interface(usbd_cdc_acm_alloc_intf());
-    usbd_add_interface(usbd_cdc_acm_alloc_intf());
+    usbd_add_interface(usbd_cdc_acm_init_intf(&intf0));
+    usbd_add_interface(usbd_cdc_acm_init_intf(&intf1));
     usbd_add_endpoint(&cdc_out_ep);
     usbd_add_endpoint(&cdc_in_ep);
 
