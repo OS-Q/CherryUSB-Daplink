@@ -10,7 +10,6 @@
 #define __WEAK __attribute__((weak))
 #endif
 
-
 #define PIN_SWCLK_TCK  A15
 #define PIN_SWDIO_TMS  A2
 #define PIN_TDI        A0
@@ -27,8 +26,7 @@
 void dap_platform_init(void);
 void dap_gpio_init(void);
 
-static inline uint32_t dap_get_time_stamp(void)
-{
+static inline uint32_t dap_get_time_stamp(void) {
     extern uint32_t SYS_GetSysTickCnt(void);
     return SYS_GetSysTickCnt();
 }

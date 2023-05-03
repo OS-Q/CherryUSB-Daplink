@@ -1,10 +1,9 @@
 #pragma once
 #include "CH58x_common.h"
 
-enum
-{
-    GPIO_OUTPUT_MODE,   /*!< OUTPUT MODE NO PULL */
-    GPIO_INPUT_MODE,    /*!< INPUT NO PULL */
+enum {
+    GPIO_OUTPUT_MODE, /*!< OUTPUT MODE NO PULL */
+    GPIO_INPUT_MODE, /*!< INPUT NO PULL */
     GPIO_INPUT_PP_MODE, /*!< INPUT PULL UP */
 };
 
